@@ -81,7 +81,8 @@ def topology(
             point[1] = int(y)
     finde = findEmax(objects)
     emax = finde.emax
-    clock(objects, system.ring_area)
+    clock = Clock(system.ring_area)
+    objects = clock.clock(objects)
 
     class find_coincidences(Types):
 
