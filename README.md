@@ -1,8 +1,10 @@
-# TOPOJSON.PY
+# PYTHON-TOPOJSON
 
-Port of [topojson](https://github.com/mbostock/topojson) more of a translation then a port at this point, licensed under same BSD license as original, current usage:
+Port of [topojson](https://github.com/mbostock/topojson), originally ported by [@calvinmetcalf](https://github.com/calvinmetcalf), licensed under the same BSD license as the original.
 
-input can be a file-like object, a path to a file, or a dict, output can be a path or a file-like object, if omited a dict is returned
+Current usage:
+
+input can be a file-like object, a path to a file, or a dict, output can be a path or a file-like object, if omitted a dict is returned
 
 current tested options are `quantization` and `simplify`.
 

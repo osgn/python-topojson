@@ -1,5 +1,6 @@
-#from https://github.com/omarestrella/simplify.py
+# from https://github.com/omarestrella/simplify.py
 from mytypes import Types
+
 
 def getSquareDistance(p1, p2):
     """
@@ -74,7 +75,8 @@ def simplifyDouglasPeucker(points, tolerance):
         max_sqdist = 0
 
         for i in range(first, last):
-            sqdist = getSquareSegmentDistance(points[i], points[first], points[last])
+            sqdist = getSquareSegmentDistance(
+                points[i], points[first], points[last])
 
             if sqdist > max_sqdist:
                 index = i
@@ -118,22 +120,33 @@ def simplify(points, tolerance=0.1, highestQuality=True):
 
     return points
 
-def simplify_object(obj,tolerance):
+
+def simplify_object(obj, tolerance):
     class Simplify(Types):
-        def line(self,points):
-            return simplify(points,tolerance)
-        def polygon(self,coordinates):
-            return map(self.line,coordinates)
-        def GeometryCollection(self,collection):
-            if collection.has_key('geometries'):
-                collection['geometries'] = map(self,geometry,collection['geometries'])
-        def LineString(self,lineString):
+
+        def line(self, points):
+            return simplify(points, tolerance)
+
+        def polygon(self, coordinates):
+            return map(self.line, coordinates)
+
+        def GeometryCollection(self, collection):
+            if 'geometries' in collection:
+                collection['geometries'] = map(
+                    self, geometry, collection['geometries'])
+
+        def LineString(self, lineString):
             lineString['coordinates'] = self.line(lineString['coordinates'])
-        def MultiLineString(self,multiLineString):
-            multiLineString['coordinates']=map(self.line,multiLineString['coordinates'])
-        def MultiPolygon(self,multiPolygon):
-            multiPolygon['coordinates'] = map(self.polygon,multiPolygon['coordinates'])
-        def Polygon(self,polygon):
-            polygon['coordinates']=self.polygon(polygon['coordinates'])
+
+        def MultiLineString(self, multiLineString):
+            multiLineString['coordinates'] = map(
+                self.line, multiLineString['coordinates'])
+
+        def MultiPolygon(self, multiPolygon):
+            multiPolygon['coordinates'] = map(
+                self.polygon, multiPolygon['coordinates'])
+
+        def Polygon(self, polygon):
+            polygon['coordinates'] = self.polygon(polygon['coordinates'])
     Simplify(obj)
     return obj
