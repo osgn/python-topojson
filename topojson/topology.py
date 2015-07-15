@@ -24,7 +24,7 @@ def topology(
         system=False,
         simplify=False):
     ln = Line(quantization)
-    id_func = lambda x: x[id_key]
+    id_func = lambda x: x.get(id_key)
     if simplify:
         objects = simplify_object(objects, simplify)
     [x0, x1, y0, y1] = bound(objects)
@@ -135,9 +135,10 @@ def topology(
                 geometry = {}
             else:
                 Types.geometry(self, geometry)
-            geometry['id'] = id_func(geometry)
-            if geometry['id'] == None:
-                del geometry['id']
+            if 'properties' in geometry:
+              geometry['id'] = id_func(geometry['properties'])
+              if geometry['id'] == None:
+                  del geometry['id']
             properties0 = geometry['properties']
             if properties0:
                 properties1 = {}
