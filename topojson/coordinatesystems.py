@@ -38,7 +38,8 @@ class Cartesian(BaseCoordinateSystem):
     def triangle_area(self, triangle):
         return abs(
             (triangle[0][0] - triangle[2][0]) * (triangle[1][1] - triangle[0][1]) -
-            (triangle[0][0] - triangle[1][0]) * (triangle[2][1] - triangle[0][1])
+            (triangle[0][0] - triangle[1][0]) *
+            (triangle[2][1] - triangle[0][1])
         )
 
     def distance(self, x0, y0, x1, y1):
@@ -58,7 +59,12 @@ class Spherical(BaseCoordinateSystem):
         if km > 1:
             return u"{:0.03f}km".format(km)
         else:
-            return u"{:0.03f} ({0.03f}°)".format(km * 1000, distance * 180 / pi)
+            return u"{:0.03f} ({0.03f}°)".format(
+                km *
+                1000,
+                distance *
+                180 /
+                pi)
 
     def ring_area(self, ring):
         if len(ring) == 0:
@@ -76,7 +82,8 @@ class Spherical(BaseCoordinateSystem):
             phi = pp[1] * RADIANS / 2.0 + PI4
             # Spherical excess E for a spherical triangle with vertices: south pole,
             # previous point, current point.  Uses a formula derived from Cagnoli’s
-            # theorem.  See Todhunter, Spherical Trig. (1871), Sec. 103, Eq. (2).
+            # theorem.  See Todhunter, Spherical Trig. (1871), Sec. 103, Eq.
+            # (2).
             dlambda = lambda_ - lambda0
             cosphi = cos(phi)
             sinphi = sin(phi)
@@ -84,7 +91,7 @@ class Spherical(BaseCoordinateSystem):
             u = cosphi0 * cosphi + k * cos(dlambda)
             v = k * sin(dlambda)
             area += atan2(v, u)
-            #Advance the previous point.
+            # Advance the previous point.
             lambda0 = lambda_
             cosphi0 = cosphi
             sinphi0 = sinphi
@@ -94,13 +101,16 @@ class Spherical(BaseCoordinateSystem):
         return area + 4 * pi if area < 0 else area
 
     def triangle_area(self, triangle):
-        def distance(a, b):    # why 2 implementations? I don't know, original has the same question in comments
+        # why 2 implementations? I don't know, original has the same question
+        # in comments
+        def distance(a, b):
             x0, y0, x1, y1 = [(n * RADIANS) for n in (a + b)]
             delta_lambda = x1 - x0
             return atan2(
                 sqrt(
                     (cos(x1) * sin(delta_lambda)) ** 2 +
-                    (cos(x0) * sin(x1) - sin(x0) * cos(x1) * cos(delta_lambda)) ** 2
+                    (cos(x0) * sin(x1) - sin(x0)
+                     * cos(x1) * cos(delta_lambda)) ** 2
                 ),
                 sin(x0) * sin(x1) + cos(x0) * cos(x1) * cos(delta_lambda)
             )
@@ -108,11 +118,13 @@ class Spherical(BaseCoordinateSystem):
         b = distance(triangle[1], triangle[2])
         c = distance(triangle[2], triangle[0])
         s = (a + b + c) / 2.0
-        return 4 * atan(sqrt(max(0, tan(s / 2.0) * tan((s - a) / 2.0) * tan((s - b) / 2.0) * tan((s - c) / 2.0))))
+        return 4 * atan(sqrt(max(0, tan(s / 2.0) * tan((s - a) / 2.0)
+                                 * tan((s - b) / 2.0) * tan((s - c) / 2.0))))
 
     def distance(self, x0, y0, x1, y1):
         x0, y0, x1, y1 = [(n * RADIANS) for n in [x0, y0, x1, y1]]
-        return 2.0 * asin(sqrt(self.haversin(y1 - y0) + cos(y0) * cos(y1) * self.haversin(x1 - x0)))
+        return 2.0 * \
+            asin(sqrt(self.haversin(y1 - y0) + cos(y0) * cos(y1) * self.haversin(x1 - x0)))
 
 
 systems = {'cartesian': Cartesian(), 'spherical': Spherical()}
