@@ -2,6 +2,11 @@
 
 Port of [topojson](https://github.com/mbostock/topojson), originally ported by [@calvinmetcalf](https://github.com/calvinmetcalf), licensed under the same BSD license as the original.
 
+Installation:
+```
+pip install git+https://github.com/osgn/python-topojson.git
+```
+
 Current usage:
 
 input can be a file-like object, a path to a file, or a dict, output can be a path or a file-like object, if omitted a dict is returned
